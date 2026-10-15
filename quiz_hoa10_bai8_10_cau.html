@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Quiz Hóa 10 - Bài 8</title>
+<style>
+:root{--bg:#f3f6fb;--card:#fff;--ink:#172033;--blue:#2864e8;--muted:#64748b;--green:#16845b;--red:#c43d4b}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:system-ui,-apple-system,Segoe UI,sans-serif;color:var(--ink)}
+main{max-width:760px;margin:auto;padding:18px}.hero{background:linear-gradient(135deg,#193c87,#3889ef);color:#fff;border-radius:20px;padding:24px;margin-bottom:16px}
+.hero h1{margin:0 0 8px;font-size:25px}.hero p{margin:0;opacity:.9}.card{background:var(--card);border-radius:18px;padding:20px;box-shadow:0 6px 24px #1720330d;margin-bottom:14px}
+.top{display:flex;justify-content:space-between;gap:10px;color:var(--muted);font-size:14px}.bar{height:8px;background:#e7edf7;border-radius:20px;margin:12px 0 18px;overflow:hidden}.bar span{display:block;height:100%;background:var(--blue);width:0}
+h2{font-size:20px;line-height:1.4}.answers{display:grid;gap:10px}.answers button,.action{width:100%;padding:13px 14px;border:1px solid #d8e0ee;background:#fff;border-radius:12px;text-align:left;font:inherit;cursor:pointer}.answers button:disabled{cursor:default}.answers button.correct{border-color:var(--green);background:#e8f7f0}.answers button.wrong{border-color:var(--red);background:#fff0f1}.explain{padding:12px;border-radius:12px;background:#f1f5fb;margin-top:14px;line-height:1.5}.action{background:var(--blue);color:#fff;border:0;text-align:center;font-weight:700;margin-top:16px}.small{font-size:13px;color:var(--muted);line-height:1.5}.hidden{display:none}.result{text-align:center}.score{font-size:42px;font-weight:800;color:var(--blue)}
+</style>
+</head>
+<body><main>
+<section class="hero"><h1>⚗️ QUIZ HÓA HỌC 10</h1><p>Bài 8 · Định luật tuần hoàn và ý nghĩa của bảng tuần hoàn</p></section>
+<section class="card" id="start"><label for="player"><b>Tên người chơi</b></label><input id="player" maxlength="24" placeholder="Nhập tên của bạn" style="display:block;width:100%;padding:12px;margin-top:8px;border:1px solid #d8e0ee;border-radius:10px;font:inherit"><p class="small">Bản 10 câu hỏi tự luyện. File này chưa đồng bộ điểm giữa nhiều điện thoại.</p><button class="action" id="begin">Bắt đầu làm bài</button></section>
+<section class="card hidden" id="quiz"><div class="top"><span id="counter">Câu 1/10</span><span id="points">Điểm: 0</span></div><div class="bar"><span id="progress"></span></div><h2 id="question"></h2><div class="answers" id="answers"></div><div class="explain hidden" id="explain"></div><button class="action hidden" id="next">Câu tiếp theo</button></section>
+<section class="card hidden result" id="result"><h2>Hoàn thành!</h2><p id="greeting"></p><div class="score" id="finalscore"></div><p id="feedback"></p><button class="action" id="again">Làm lại</button></section>
+<p class="small">Nội dung học tập: kiến thức Hóa học 10, Bài 8. Kết quả chỉ lưu trong phiên chơi trên thiết bị hiện tại.</p>
+</main>
+<script>
+const qs=[
+{q:"Định luật tuần hoàn hiện đại phát biểu rằng tính chất của các nguyên tố và đơn chất, cũng như thành phần và tính chất của hợp chất, biến đổi tuần hoàn theo chiều tăng của đại lượng nào?",a:["Nguyên tử khối","Số neutron","Điện tích hạt nhân nguyên tử","Số lớp electron"],c:2,e:"Định luật tuần hoàn hiện đại gắn sự biến đổi tuần hoàn với chiều tăng điện tích hạt nhân, tức số hiệu nguyên tử Z."},
+{q:"Trong một chu kì, khi điện tích hạt nhân tăng dần từ trái sang phải, số lớp electron của các nguyên tử nhìn chung thay đổi thế nào?",a:["Tăng thêm một lớp ở mỗi nguyên tố","Không đổi","Giảm dần từng lớp","Luôn bằng 1"],c:1,e:"Các nguyên tố trong cùng một chu kì có cùng số lớp electron."},
+{q:"Các nguyên tố thuộc cùng một nhóm A (theo cách gọi nhóm A trong chương trình phổ thông) thường có điểm giống nhau nào?",a:["Cùng số lớp electron","Cùng số electron hóa trị ở lớp ngoài cùng đối với các nhóm A tương ứng","Cùng số neutron","Cùng nguyên tử khối"],c:1,e:"Các nguyên tố cùng nhóm A thường có số electron lớp ngoài cùng giống nhau nên có tính chất hóa học tương tự."},
+{q:"Nguyên tố có Z = 11 nằm ở chu kì và nhóm nào?",a:["Chu kì 2, nhóm IA","Chu kì 3, nhóm IA","Chu kì 3, nhóm VIIA","Chu kì 4, nhóm IIA"],c:1,e:"Z = 11 là Na, có cấu hình electron 2,8,1 nên thuộc chu kì 3, nhóm IA (nhóm 1)."},
+{q:"Trong một chu kì, từ trái sang phải, bán kính nguyên tử nói chung biến đổi như thế nào?",a:["Tăng dần","Giảm dần","Không đổi hoàn toàn","Tăng rồi giảm theo quy luật cố định"],c:1,e:"Điện tích hạt nhân tăng trong khi electron được thêm vào cùng lớp chính, lực hút hạt nhân hiệu dụng tăng nên bán kính thường giảm."},
+{q:"Trong một nhóm A, đi từ trên xuống dưới, tính kim loại của các nguyên tố nhìn chung thay đổi ra sao?",a:["Tăng dần","Giảm dần","Không đổi","Lúc nào cũng bằng nhau"],c:0,e:"Xuống nhóm, bán kính nguyên tử thường tăng và electron ngoài cùng dễ nhường hơn, nên tính kim loại thường tăng."},
+{q:"Nguyên tố X có cấu hình electron lớp ngoài cùng là 3s²3p⁵. X thuộc nhóm nào?",a:["Nhóm IA","Nhóm IIA","Nhóm VIIA (nhóm 17)","Nhóm VIIIA (nhóm 18)"],c:2,e:"Lớp ngoài cùng có 7 electron (3s²3p⁵), đặc trưng của nhóm halogen: nhóm VIIA hay nhóm 17."},
+{q:"Oxide cao nhất của một nguyên tố nhóm IVA (nhóm 14) có công thức tổng quát nào?",a:["RO","R₂O₃","RO₂","R₂O₇"],c:2,e:"Với nguyên tố nhóm IVA, hóa trị cao nhất thường là IV; oxide cao nhất có dạng RO₂."},
+{q:"Nguyên tố X có oxide cao nhất là X₂O₇. X có khả năng thuộc nhóm nào trong các lựa chọn sau?",a:["IA","IIA","VIA","VIIA"],c:3,e:"O có số oxi hóa −2, nên X trong X₂O₇ có số oxi hóa trung bình +7; dạng oxide cao nhất điển hình của nguyên tố nhóm VIIA."},
+{q:"Vì sao các nguyên tố trong cùng một nhóm thường có tính chất hóa học tương tự nhau?",a:["Chúng có cùng số proton","Chúng có cùng số khối","Chúng có cấu hình electron lớp ngoài cùng tương tự","Chúng đều có cùng số lớp electron"],c:2,e:"Tính chất hóa học chủ yếu phụ thuộc electron hóa trị; cấu hình lớp ngoài cùng tương tự dẫn đến tính chất tương tự."}
+];
+let i=0,score=0,locked=false,name="";
+const $=id=>document.getElementById(id);
+$("begin").onclick=()=>{name=$("player").value.trim()||"Bạn";i=0;score=0;$("start").classList.add("hidden");$("result").classList.add("hidden");$("quiz").classList.remove("hidden");render()};
+function render(){locked=false;const q=qs[i];$("counter").textContent=`Câu ${i+1}/${qs.length}`;$("points").textContent=`Điểm: ${score}`;$("progress").style.width=`${i/qs.length*100}%`;$("question").textContent=q.q;$("answers").innerHTML="";$("explain").classList.add("hidden");$("next").classList.add("hidden");q.a.forEach((a,j)=>{let b=document.createElement("button");b.textContent=String.fromCharCode(65+j)+". "+a;b.onclick=()=>choose(j,b);$("answers").appendChild(b)})}
+function choose(j,btn){if(locked)return;locked=true;const q=qs[i];[...$("answers").children].forEach((b,k)=>{b.disabled=true;if(k===q.c)b.classList.add("correct")});if(j===q.c)score++;else btn.classList.add("wrong");$("points").textContent=`Điểm: ${score}`;$("explain").textContent=(j===q.c?"✅ Chính xác! ":"❌ Chưa đúng. ")+q.e;$("explain").classList.remove("hidden");$("next").classList.remove("hidden");$("next").textContent=i===qs.length-1?"Xem kết quả":"Câu tiếp theo"}
+$("next").onclick=()=>{i++;if(i<qs.length)render();else finish()};
+function finish(){$("quiz").classList.add("hidden");$("result").classList.remove("hidden");$("greeting").textContent=`${name}, bạn đã hoàn thành 10 câu.`;$("finalscore").textContent=`${score}/10`;$("feedback").textContent=score>=9?"Xuất sắc!":score>=7?"Khá tốt! Ôn lại các câu sai nhé.":score>=5?"Cố lên! Đọc phần giải thích rồi thử lại.":"Hãy ôn lại định luật tuần hoàn và xu hướng biến đổi tính chất rồi làm lại."; $("progress").style.width="100%"}
+$("again").onclick=()=>{$("result").classList.add("hidden");$("start").classList.remove("hidden")};
+</script></body></html>
